@@ -16,8 +16,8 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @PostMapping("/add_user")
-    public ResponseEntity<?> reportUrl(@RequestBody User user) {
+    @PostMapping("/add")
+    public ResponseEntity<?> addUser(@RequestBody User user) {
         return ResponseEntity.ok(new ApiResponse(true, HttpStatus.OK.value(), userService.addUser(user)));
     }
 }

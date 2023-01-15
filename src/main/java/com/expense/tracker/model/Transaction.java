@@ -34,4 +34,11 @@ public class Transaction {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Transaction(User user, Category category, LocalDate dateStamp, double amount) {
+        this.user = user;
+        this.category = category;
+        this.dateStamp = dateStamp;
+        this.amount = amount;
+    }
 }

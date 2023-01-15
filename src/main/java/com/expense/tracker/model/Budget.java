@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -29,9 +27,14 @@ public class Budget {
     @JsonIgnore
     private Category category;
     private double amount;
-    private LocalDate dateStamp;
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Budget(User user, Category category, double amount) {
+        this.user = user;
+        this.category = category;
+        this.amount = amount;
+    }
 }
