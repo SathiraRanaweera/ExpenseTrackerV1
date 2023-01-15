@@ -1,5 +1,6 @@
 package com.expense.tracker.service;
 
+import com.expense.tracker.dto.ApiResponse;
 import com.expense.tracker.dto.TransactionDTO;
 import com.expense.tracker.model.Category;
 import com.expense.tracker.model.Transaction;
@@ -10,6 +11,7 @@ import com.expense.tracker.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,9 +57,13 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> getTransactionByUser(Long userId) {
-        List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
+    public ApiResponse getTransactionByUser(Long userId) {
+        List<Transaction> transactions = transactionRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+        if(transactions.isEmpty()) {
+            LOGGER.warn("There are no records for transaction for user - {}", userId);
+            return new ApiResponse(false, HttpStatus.NOT_FOUND.value(), "There are no records for transactions");
+        }
         LOGGER.info("Successfully get the all transactions. (By User - {})", userId);
-        return transactions;
+        return new ApiResponse(true, HttpStatus.OK.value(), transactions);
     }
 }

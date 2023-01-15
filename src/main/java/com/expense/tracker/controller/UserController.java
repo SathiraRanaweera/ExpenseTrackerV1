@@ -1,6 +1,6 @@
 package com.expense.tracker.controller;
 
-import com.example.expenseTracker.dto.ApiResponse;
+import com.expense.tracker.dto.ApiResponse;
 import com.expense.tracker.model.User;
 import com.expense.tracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

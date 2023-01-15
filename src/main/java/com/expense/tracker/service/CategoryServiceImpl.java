@@ -1,5 +1,6 @@
 package com.expense.tracker.service;
 
+import com.expense.tracker.dto.ApiResponse;
 import com.expense.tracker.dto.CategoryDTO;
 import com.expense.tracker.model.CategoryCustom;
 import com.expense.tracker.model.CategoryDefault;
@@ -10,6 +11,7 @@ import com.expense.tracker.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,13 +59,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDTO> getCategoriesByUser(Long userId) {
+    public ApiResponse getCategoriesByUser(Long userId) {
         List<CategoryDefault> categoryDefaults = categoryDefaultRepository.findAll();
         List<CategoryDTO> defaultsToCustomDTO = categoryDefaults.stream().map(x -> new CategoryDTO(x.getId(), x.getName(), x.getDescription(), x.getTransactionType(), true)).collect(Collectors.toList());
         List<CategoryCustom> categoryCustoms = categoryCustomRepository.findAllByUserId(userId);
         List<CategoryDTO> customsToCustomDTO = categoryCustoms.stream().map(x -> new CategoryDTO(x.getId(), x.getName(), x.getDescription(), x.getTransactionType(), true)).collect(Collectors.toList());
         defaultsToCustomDTO.addAll(customsToCustomDTO);
+        if(defaultsToCustomDTO.isEmpty()) {
+            LOGGER.warn("There are no records for categories for user - {}", userId);
+            return new ApiResponse(false, HttpStatus.NOT_FOUND.value(), "There are no records for categories");
+        }
         LOGGER.info("Successfully get the all categories. (By User - {})", userId);
-        return defaultsToCustomDTO;
+        return new ApiResponse(true, HttpStatus.OK.value(), defaultsToCustomDTO);
     }
 }

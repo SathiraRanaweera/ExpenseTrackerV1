@@ -1,11 +1,13 @@
 package com.expense.tracker.service;
 
+import com.expense.tracker.dto.ApiResponse;
 import com.expense.tracker.dto.BudgetDTO;
 import com.expense.tracker.model.*;
 import com.expense.tracker.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,10 +54,14 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
-    public List<BudgetDTO> getBudgetsByUser(Long userId) {
+    public ApiResponse getBudgetsByUser(Long userId) {
         List<Budget> budgets = budgetRepository.findAllByUserId(userId);
+        if(budgets.isEmpty()) {
+            LOGGER.warn("There are no records for budgets for user - {}", userId);
+            return new ApiResponse(false, HttpStatus.NOT_FOUND.value(), "There are no records for budgets");
+        }
         List<BudgetDTO> budgetDTOS = budgets.stream().map(x -> new BudgetDTO(x.getId(), x.getCategory().getId(), x.getAmount())).collect(Collectors.toList());
         LOGGER.info("Successfully get the all budgets. (By User - {})", userId);
-        return budgetDTOS;
+        return new ApiResponse(true, HttpStatus.OK.value(), budgetDTOS);
     }
 }

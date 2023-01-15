@@ -35,4 +35,12 @@ public class TransactionSummary {
     private LocalDateTime createdAt;
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public TransactionSummary(User user, Category category, String month, double transactionAmount, double budgetAmount) {
+        this.user = user;
+        this.category = category;
+        this.month = month;
+        this.transactionAmount = transactionAmount;
+        this.budgetAmount = budgetAmount;
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.expenseTracker.dto;
+package com.expense.tracker.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

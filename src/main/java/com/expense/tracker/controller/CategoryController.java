@@ -1,6 +1,6 @@
 package com.expense.tracker.controller;
 
-import com.example.expenseTracker.dto.ApiResponse;
+import com.expense.tracker.dto.ApiResponse;
 import com.expense.tracker.dto.CategoryDTO;
 import com.expense.tracker.model.CategoryCustom;
 import com.expense.tracker.service.CategoryService;
@@ -34,6 +34,6 @@ public class CategoryController {
 
     @GetMapping("/get/{userId}")
     public ResponseEntity<?> getCategoriesByUser(@PathVariable long userId) {
-        return ResponseEntity.ok(new ApiResponse(true, HttpStatus.OK.value(), categoryService.getCategoriesByUser(userId)));
+        return ResponseEntity.ok(categoryService.getCategoriesByUser(userId));
     }
 }

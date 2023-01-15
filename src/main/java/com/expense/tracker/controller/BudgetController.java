@@ -1,6 +1,6 @@
 package com.expense.tracker.controller;
 
-import com.example.expenseTracker.dto.ApiResponse;
+import com.expense.tracker.dto.ApiResponse;
 import com.expense.tracker.dto.BudgetDTO;
 import com.expense.tracker.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,6 @@ public class BudgetController {
 
     @GetMapping("/get/{userId}")
     public ResponseEntity<?> getBudgetsByUser(@PathVariable long userId) {
-        return ResponseEntity.ok(new ApiResponse(true, HttpStatus.OK.value(), budgetService.getBudgetsByUser(userId)));
+        return ResponseEntity.ok(budgetService.getBudgetsByUser(userId));
     }
 }
